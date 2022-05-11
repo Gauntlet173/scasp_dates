@@ -436,26 +436,43 @@ date_add_days(date(Y,M,D),Days,date(Y2,M2,D2)) :-
 	ED2 is ED + Days,
 	epoch_to_date(ED2,Y2,M2,D2).
 
+% I want to use a new version of the comparators that takes advantage of constraints.
+% after(date(Y,M,D),date(Y2,M2,D2)) :-
+% 	epoch_date(date(Y,M,D),E1),
+% 	epoch_date(date(Y2,M2,D2),E2),
+% 	E1 #> E2.
+% before(date(Y,M,D),date(Y2,M2,D2)) :-
+% 	epoch_date(date(Y,M,D),E1),
+% 	epoch_date(date(Y2,M2,D2),E2),
+% 	E1 #< E2.
+% not_after(date(Y,M,D),date(Y2,M2,D2)) :-
+% 	epoch_date(date(Y,M,D),E1),
+% 	epoch_date(date(Y2,M2,D2),E2),
+% 	E1 #>= E2.
+% not_before(date(Y,M,D),date(Y2,M2,D2)) :-
+% 	epoch_date(date(Y,M,D),E1),
+% 	epoch_date(date(Y2,M2,D2),E2),
+% 	E1 #=< E2.
 gt(date(Y,M,D),date(Y2,M2,D2)) :-
-	Y > Y2.
+	Y #> Y2.
 gt(date(Y,M,D),date(Y2,M2,D2)) :-
 	Y = Y2,
-	M > M2.
+	M #> M2.
 gt(date(Y,M,D),date(Y2,M2,D2)) :-
 	Y = Y2,
 	M = M2,
-	D > D2.
+	D #> D2.
 after(date(Y,M,D),date(Y2,M2,D2)) :-
 	gt(date(Y,M,D),date(Y2,M2,D2)).
 lt(date(Y,M,D),date(Y2,M2,D2)) :-
-	Y < Y2.
+	Y #< Y2.
 lt(date(Y,M,D),date(Y2,M2,D2)) :-
 	Y = Y2,
-	M < M2.
+	M #< M2.
 lt(date(Y,M,D),date(Y2,M2,D2)) :-
 	Y = Y2,
 	M = M2,
-	D < D2.
+	D #< D2.
 before(date(Y,M,D),date(Y2,M2,D2)) :-
 	lt(date(Y,M,D),date(Y2,M2,D2)).
 eq(date(Y,M,D),date(Y2,M2,D2)) :-
@@ -680,12 +697,3 @@ days_in_year(Y,365) :-
 	not leapyear(Y).
 days_in_year(Y,366) :-
 	leapyear(Y).
-
-% What date was 440 days before November 30, 2021?
-%?-   date_add(date(2021,11,30),duration(-1,0,0,440),X).
-%?- date_add(date(1980,4,1),duration(1,0,0,400),X).
-
-% What is January 30, 2021 plus one month?
-% ?- date_add(date(2021,3,30),duration(-1,0,1,0),X).
-%?- epoch_date(date(1977,4,14),ED), epoch_to_date(ED,Y,M,D).
-%?- date_add_days(date(1977,4,14),-1000,X).
